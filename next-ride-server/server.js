@@ -5,6 +5,9 @@ import cors from 'cors'
 import userRouter from './src/router/user/userRouter.js'
 import cookieParser from 'cookie-parser'
 import router from './src/router/admin/adminRouter.js'
+// import passport from 'passport'
+import Authrouter from './src/router/googleAuthroute/gooleAuthRoute.js'
+import ProviderRouter from './src/router/providerRouter/providerRouter.js'
 
 const app = express()
 dotenv.config()
@@ -17,8 +20,12 @@ app.use(cors({
     credentials: true}))
 
 app.use(cookieParser())
+// app.use(passport.initialize());
+// app.use(passport.session())
 
-async function main(){
+
+
+export default async function main(){
     try {
         mongoose.connect('mongodb+srv://angadktofficial:N7L8gQp1x32wcZSx@cluster0.x0rll.mongodb.net/nextride?retryWrites=true&w=majority&appName=Cluster0')
         console.log("connection successful")
@@ -27,6 +34,8 @@ async function main(){
     }
 }
 main()
+
+
 
 
 //centralised error handling
@@ -39,6 +48,8 @@ app.use((err, req,res, next)=>{
 
 app.use('/api/user',userRouter)
 app.use('/api/admin', router)
+app.use('/api',Authrouter)
+app.use('/api/provider', ProviderRouter)
 
 app.listen(Port,()=>{
     console.log(`server connected to the ${Port}`)

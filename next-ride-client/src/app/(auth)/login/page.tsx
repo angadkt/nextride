@@ -5,21 +5,39 @@ import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
 import { axiosInstance } from "@/Axios/axiosInstance";
+import { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
+
 
 
 const userSignIn = async (values: any) => {
-  const response = await axiosInstance.post("user/login", {
-    email: values.email,
-    password: values.password,
-  });
-    console.log("response check", response)
-  if (response.status === 200) {
-    alert("user logginned successfully");
-  } else if(response.status === 202){
-    alert("admin loggined successfully");
+  try{
+    const response = await axiosInstance.post("user/login", {
+      email: values.email,
+      password: values.password,
+    });
+      console.log("response check", response)
+    if (response.status === 200) {
+      toast("user logginned successfully");
+    } else if(response.status === 202){
+      toast("admin loggined successfully");
+    }
+    return response.data;
   }
-  return response.data;
+  catch(error : unknown){
+    if (error instanceof AxiosError) {
+      // TypeScript now knows the shape of `error.response`
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      console.log("Error message:", errorMessage);
+      toast.error(errorMessage);
+    } else {
+      // Handle non-Axios errors
+      console.error("Unknown error:", error);
+      toast.error("An unexpected error occurred.");
+    }
+  }
 };
 
 export default function SignIn() {
@@ -63,6 +81,9 @@ const router = useRouter();
       
     },
   });
+
+
+  
 
   return (
     <div className="bg-[url('https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?t=st=1738258764~exp=1738262364~hmac=f779a38b63244bf3b0b412527e94872bdefc9a3a0685197c8cc4cf21774d2bbe&w=1380')] bg-no-repeat bg-cover w-full h-screen flex justify-center items-center">
@@ -135,6 +156,7 @@ const router = useRouter();
               <button
                 type="button"
                 className="w-full flex items-center justify-center gap-2 bg-white border border-input text-gray-700 py-2 px-4 rounded-full hover:inputhover transition-colors duration-200"
+                onClick={()=>signIn("google", { callbackUrl: "/" })}
               >
                 <img
                   src="/images/google-logo.png"

@@ -2,8 +2,10 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import  useStore  from "../../store/userStore";
 
 export default function Navbar() {
+  const { isOpen , handleOpenAndClose } = useStore()
   const pathName = usePathname()
   const router = useRouter();
 
@@ -11,12 +13,16 @@ export default function Navbar() {
   const [token, setToken] = useState<string | null>(null)
 
 
+
   useEffect(() => {
    if(typeof window !== "undefined"){
     const tokenVar: string | null = localStorage.getItem("isUser");
+    console.log("token from local storage",tokenVar)
+    console.log("token from local storage",typeof tokenVar)
+
     setToken(tokenVar);
    }
-  }, []);
+  }, [token]);
 
   const handleSignInout = () => {
     localStorage.clear();
@@ -42,23 +48,27 @@ export default function Navbar() {
   useEffect(() => {
     if (pathName === "/profile") {
       setScroll(true); 
-    } else {
+    }else {
       setScroll(false);
     }
   }, [pathName]);
   
   
-  if(pathName === "/login" || pathName === "/register" || pathName?.includes("/admin")){
-    return null
+  if (pathName === "/login" || pathName === "/register" || pathName?.includes("/admin") || pathName?.includes("/provider")){
+    return null;
   }
+  
   // const tokenvar:string | null = localStorage.getItem("token")
 
+
+    console.log("isOpen", isOpen)
   return (
     <div className="w-full h-[60px] md:px-28 px-2 mt-5 z-50 fixed">
       <div className="w-full h-full flex  rounded-lg backdrop-blur-lg px-2">
         <div className="flex-1  flex items-center ">
           <span
-            className="material-symbols-outlined "
+          onClick={handleOpenAndClose}
+            className="material-symbols-outlined cursor-pointer"
             style={{
               fontSize: "40px",
               color: scroll ? "black" : "white",

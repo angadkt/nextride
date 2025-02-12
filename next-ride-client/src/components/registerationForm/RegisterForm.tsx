@@ -10,6 +10,14 @@ import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 
 const userRegister = async (values: any) => {
+
+  console.log("Payload:", {
+    name: values.username,
+    email: values.email,
+    mobile: values.mobileNumber,
+    password: values.password,
+  });
+
   const response = await axiosInstance.post("user/register", {
     name: values.username,
     email: values.email,
@@ -73,16 +81,23 @@ export default function Register() {
     }),
     onSubmit: async (values:any, { resetForm }) => {
       try {
-
-        const respoonse = await mutation.mutate(values)
+        const respoonse = await mutation.mutateAsync(values)
         console.log("check" , respoonse)
         toast.success("Registration successful!");
         alert("Registration successful!")
-        resetForm(); // Clear form after success
+        resetForm(); 
         router.push("/login"); // Redirect to login page
-      } catch (error) {
-        toast.error("Registration failed!");
+      } catch (error : any) {
         console.error("Error:", error);
+        // if (error?.response?.data?.message) {
+        //   alert(error.response.data.message);
+        // } else {
+        //   alert("An error occurred. Please try again.");
+        // }
+        // alert(error.response.data.message)
+        // toast.error("Registration failed!");
+        const errorMessage = error?.response?.data?.message || "An error occured. Please try again!"
+        toast.error(errorMessage)
       }
     },
   });

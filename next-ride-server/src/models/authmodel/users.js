@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const users = new mongoose.Schema(
   {
+    googleId: { type: String, unique: true },
     name: {
       type: String,
       required: true,
@@ -12,11 +13,14 @@ const users = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
     },
     mobile: {
       type: String,
-      required: true,
+      // required: true,
+    },
+    image:{
+      type:String,
     },
     role: {
       type: String,
@@ -45,9 +49,14 @@ const users = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Favourite",
     },
+    provider: {
+      type: String,
+      enum: ["credentials", "google"],
+      default: "credentials",
+    },
   },
   { timestamps: true }
 );
 
-const Users = mongoose.model("users", users)
-export default Users
+const Users = mongoose.model("users", users);
+export default Users;

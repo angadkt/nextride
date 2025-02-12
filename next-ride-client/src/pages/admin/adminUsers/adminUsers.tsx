@@ -8,6 +8,8 @@ import {
   handleDeleteUser,
 } from "@/service/fetch/fetchData";
 import Loader from "@/components/loader/loader";
+import Swal from "sweetalert2";
+
 
 export default function AdminUsers() {
   const queryClient = useQueryClient();
@@ -15,7 +17,7 @@ export default function AdminUsers() {
   const mutation = useMutation({
     mutationFn: (userId: any) => handleBlockAndUnblock(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["userdata"]);
+      queryClient.invalidateQueries({queryKey: ["userdata"] });
     },
     onError: (error) => {
       console.error("Error during block/unblock: ", error);
@@ -25,7 +27,7 @@ export default function AdminUsers() {
   const deleteMutation = useMutation({
     mutationFn: (userId: any) => handleDeleteUser(userId),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["userdata"]);
+      queryClient.invalidateQueries({queryKey: ["userdata"] });
       console.log("data check", data);
     },
     onError: (error) => {
@@ -56,7 +58,30 @@ export default function AdminUsers() {
   };
 
   const handleDeleteUserMutation = (userId: any) => {
-    deleteMutation.mutate(userId);
+    Swal.fire({
+      title: "Are you sure?",
+      // text: "Do you want to delete user",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#6A42AB",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete User!",
+      customClass: {
+        popup: "bg-[#333333] rounded-xl shadow-2xl w-80 h-80", 
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(userId)
+        Swal.fire({
+          title: "User Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+          customClass: {
+            popup: "bg-[#333333] rounded-xl shadow-2xl w-96 h-96", 
+          },
+        });
+      }
+    })
   };
 
   return (
@@ -70,7 +95,7 @@ export default function AdminUsers() {
           <table className="table-auto w-full   border-collapse border border-gray-700 shadow-2xl ">
             <thead>
               <tr className="bg-gray-800 text-white text-left ">
-                <th className="border border-gray-700 px-4 py-2">#</th>
+                <th className="border border-gray-700 px-4 py-2">No</th>
                 <th className="border border-gray-700 px-4 py-2">Name</th>
                 <th className="border border-gray-700 px-4 py-2">Mobile</th>
                 <th className="border border-gray-700 px-4 py-2">
@@ -87,7 +112,7 @@ export default function AdminUsers() {
                   <td className="border border-gray-700 px-4 py-2">
                     {index + 1}
                   </td>
-                  <td className="border border-gray-700 px-4 py-2">
+                  <td  className="border border-gray-700 px-4 py-2">
                     {item.name}
                   </td>
                   <td className="border border-gray-700 px-4 py-2">

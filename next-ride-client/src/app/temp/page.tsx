@@ -1,6 +1,7 @@
 'use client'
 
 import { fetchUsers } from "@/service/fetch/fetch"
+// import { SignIn } from "@clerk/nextjs"
 import { useQuery } from "@tanstack/react-query"
 
 export default function temp (){
@@ -17,7 +18,8 @@ export default function temp (){
             {/* {data?.map((item: {id: number; name: string})=>(
                   <li key={item.id}>{item.name}</li>
             ))} */}
-            <p>hello</p>
+            {/* <p>hello</p> */}
+            {/* <SignIn /> */}
         </div>
         </>
     )

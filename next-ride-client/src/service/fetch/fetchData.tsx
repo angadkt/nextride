@@ -4,7 +4,6 @@ import { axiosInstance } from "@/Axios/axiosInstance"
 export const  getSpecificUsers = async() =>{
     const data = await axiosInstance.get("user/profile", {withCredentials: true})
     console.log(data.data);
-    
  return data.data
 }
 

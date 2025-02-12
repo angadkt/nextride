@@ -1,5 +1,6 @@
 import Admin from "../../../models/adminmodel/admin.js";
 import Users from "../../../models/authmodel/users.js";
+// import Providers from "../../../models/providersModel/providers.js";
 import { comparePassword, hashPassword } from "../../../utils/bcrypt.js";
 import { generateToken } from "../../../utils/jwt.js";
 
@@ -9,6 +10,7 @@ export const register = async (req, res) => {
     return res.status(400).json({ success: false, message: `invalid input` });
 
   const existEmail = await Users.findOne({ email });
+  // console.log("email check",existEmail)
   if (existEmail)
     return res
       .status(400)
@@ -27,10 +29,11 @@ export const register = async (req, res) => {
     email,
     mobile,
     password: hashedPassword,
+    // provider:"credentials",
   });
   await newUser.save();
   return res.status(200).json({
-    success: true,
+    success: true, 
     message: `user registered successfully`,
     data: newUser,
   });
@@ -99,4 +102,38 @@ export const login = async (req, res) => {
     data: userExist,
     token: token,
   });
+};
+
+// =============================================================
+
+// export const googleAuth = async (req, res) => {
+//   console.log("hello")
+//   const user = req.user;
+
+//   const token = generateToken(user._id);
+
+//   res.cookie("token", token,{
+//     httpOnly: true,
+//     secure: false, // Secure in production
+//   })
+
+//   res.redirect('http://localhost:3000/')
+// };
+
+
+export const googleAuth = async (req, res) => {
+  const { email, name, image, googleId } = req.body;
+
+  try {
+    let user = await Users.findOne({ googleId });
+
+    if (!user) {
+      user = await Users.create({ googleId, email, name, image });
+    }
+
+    res.status(200).json({success:true, message:'google authenticatin successfull' ,data:user });
+    res.redirect("http://localhost:3000/")
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };

@@ -7,7 +7,7 @@ import UserIcon from "../../../../public/adminIcons/user.png";
 import BikesIcon from "../../../../public/adminIcons/bikesicon.png";
 import Providersicon from "../../../../public/adminIcons/providers.png";
 import Widget from "../../../../public/adminIcons/widget.png";
-import MainLogo from "../../../../public/adminIcons/mainLogo.png";
+// import MainLogo from "../../../../public/adminIcons/mainLogo.png";
 import AdminProfile from "../../../../public/adminIcons/adminprofile.png";
 import Logout from "../../../../public/adminIcons/logout.png";
 import { usePathname, useRouter } from "next/navigation";
@@ -125,7 +125,7 @@ export default function SideBar() {
             <h1 className="text-base font-medium text-white">Users</h1>
           ) : null}
         </div>
-        <div className=" p-2 flex gap-5">
+        <div onClick={()=>handleRouteOnClick('temp')} className=" p-2 flex gap-5">
           <Image src={BikesIcon} width={25} height={25} alt="loading" />
           {isOpen && display ? (
             <h1 className="text-base font-medium text-white">Bikes</h1>

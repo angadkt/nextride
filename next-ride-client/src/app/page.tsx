@@ -1,4 +1,5 @@
- import Companies from "@/pages/companyInfo/companies";
+import Navbar from "@/components/navbar/navBar";
+import Companies from "@/pages/companyInfo/companies";
 // import BookingForm from "@/pages/bookingForm/bookingform";
 import Hero from "@/pages/heroSection/hero";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <>
       {/* <GoogleOAuthProvider clientId={ClientId} > */}
+      <Navbar />
         <Hero />
 
         <Companies />

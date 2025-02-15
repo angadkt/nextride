@@ -10,6 +10,7 @@ import {
   addBikes,
   getLiveBikes,
   getPendingBikes,
+  getSpecificProvider,
 } from "../../controllers/provider/providerDash/providerDash.js";
 import { isAuthenticate } from "../../middleware/isAuth/isAuth.js";
 
@@ -40,9 +41,9 @@ ProviderRouter.post(
   isAuthenticate,
   tryCatch(addBikes)
 );
-ProviderRouter.get("/getLivebikes", tryCatch(getLiveBikes));
-ProviderRouter.get("/getpendnigbikes", tryCatch(getPendingBikes));
+ProviderRouter.get("/getLivebikes", isAuthenticate,tryCatch(getLiveBikes));
+ProviderRouter.get("/getpendnigbikes",isAuthenticate ,tryCatch(getPendingBikes));
 
 // ProviderRouter.post('/temp', tryCatch(temp))
-
+ProviderRouter.get("/getspecificprovider" ,isAuthenticate ,tryCatch(getSpecificProvider))
 export default ProviderRouter;

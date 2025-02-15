@@ -85,8 +85,8 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="bg-[#333333] flex">
-      <SideBar />
+    <div className="bg-[#333333] flex ">
+      {/* <SideBar /> */}
       <div className="flex-grow">
         <div className="ml-5 mt-4">
           <h1 className="text-3xl font-semibold text-white">Users</h1>

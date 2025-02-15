@@ -62,6 +62,10 @@ const provider = new mongoose.Schema(
         emailVerificationToken:{
             type:String
         },
+        wallet:{
+            type:Number,
+            default:0
+        },
         createdAt:{
             type:Date,
             default:Date.now

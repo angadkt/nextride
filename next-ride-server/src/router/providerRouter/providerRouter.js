@@ -1,6 +1,7 @@
 import express from "express";
 import {
   providerLogin,
+  providerLogout,
   providerRegister,
   verifyEmail,
 } from "../../controllers/provider/providerAuthController/providerAuth.js";
@@ -9,6 +10,7 @@ import upload from "../../middleware/uploadMiddleware/uploadMiddleware.js";
 import {
   addBikes,
   getLiveBikes,
+  getMyBikes,
   getPendingBikes,
   getSpecificProvider,
 } from "../../controllers/provider/providerDash/providerDash.js";
@@ -28,6 +30,7 @@ ProviderRouter.post(
 );
 ProviderRouter.get("/verify-email", verifyEmail);
 ProviderRouter.post("/login", tryCatch(providerLogin));
+ProviderRouter.get("/providerlogout", tryCatch(providerLogout))
 // ===============================================================
 
 //provider dash
@@ -43,7 +46,7 @@ ProviderRouter.post(
 );
 ProviderRouter.get("/getLivebikes", isAuthenticate,tryCatch(getLiveBikes));
 ProviderRouter.get("/getpendnigbikes",isAuthenticate ,tryCatch(getPendingBikes));
+ProviderRouter.get("/getmybikes",isAuthenticate ,tryCatch(getMyBikes))
 
-// ProviderRouter.post('/temp', tryCatch(temp))
 ProviderRouter.get("/getspecificprovider" ,isAuthenticate ,tryCatch(getSpecificProvider))
 export default ProviderRouter;

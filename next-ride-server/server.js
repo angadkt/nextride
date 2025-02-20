@@ -8,6 +8,7 @@ import router from './src/router/admin/adminRouter.js'
 // import passport from 'passport'
 import Authrouter from './src/router/googleAuthroute/gooleAuthRoute.js'
 import ProviderRouter from './src/router/providerRouter/providerRouter.js'
+import sharedRouter from './src/router/sharedRoute/sharedRoute.js'
 
 const app = express()
 dotenv.config()
@@ -50,6 +51,7 @@ app.use('/api/user',userRouter)
 app.use('/api/admin', router)
 app.use('/api',Authrouter)
 app.use('/api/provider', ProviderRouter)
+app.use('/api/shared', sharedRouter)
 
 app.listen(Port,()=>{
     console.log(`server connected to the ${Port}`)

@@ -22,12 +22,21 @@ const bookingSchema = mongoose.Schema(
     },
     pickUpTime: {
       type: String,
-      required: true,
+      // required: true,
     },
     dropOffTime: {
       type: String,
-      required: true,
+      // required: true,
     },
+    coast:{
+      type:String,
+      required:true
+    },
+    providersId:{
+      type:mongoose.Types.ObjectId,
+      ref:"Providers",
+      required:true
+    }
   },
   { timestamps: true }
 );

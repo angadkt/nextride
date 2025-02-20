@@ -1,8 +1,14 @@
 import Admin from "../../../models/adminmodel/admin.js";
 import Users from "../../../models/authmodel/users.js";
-// import Providers from "../../../models/providersModel/providers.js";
 import { comparePassword, hashPassword } from "../../../utils/bcrypt.js";
 import { generateToken } from "../../../utils/jwt.js";
+import { OAuth2Client } from "google-auth-library"
+import dotenv from "dotenv"
+
+dotenv.config()
+
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 export const register = async (req, res) => {
   const { name, email, password, mobile } = req.body;
@@ -106,34 +112,53 @@ export const login = async (req, res) => {
 
 // =============================================================
 
-// export const googleAuth = async (req, res) => {
-//   console.log("hello")
-//   const user = req.user;
-
-//   const token = generateToken(user._id);
-
-//   res.cookie("token", token,{
-//     httpOnly: true,
-//     secure: false, // Secure in production
-//   })
-
-//   res.redirect('http://localhost:3000/')
-// };
-
-
 export const googleAuth = async (req, res) => {
-  const { email, name, image, googleId } = req.body;
-
-  try {
-    let user = await Users.findOne({ googleId });
-
-    if (!user) {
-      user = await Users.create({ googleId, email, name, image });
-    }
-
-    res.status(200).json({success:true, message:'google authenticatin successfull' ,data:user });
-    res.redirect("http://localhost:3000/")
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: "Token is required" });
   }
+
+  // Verify Google token
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+  if (!payload) {
+    return res.status(401).json({ error: "Invalid Google token" });
+  }
+
+  const { email, name, sub, picture } = payload; // Extract user details
+
+  // Check if user exists in DB
+  let user = await Users.findOne({ email });
+  if (!user) {
+    // Create a new user if not found
+    user = new Users({
+      googleId: sub,
+      email,
+      name,
+      profilePicture: picture,
+    });
+    await user.save();
+  }
+
+  // Generate JWT token
+  const authToken = generateToken(user._id,{
+    expiresIn: "7d",
+  })
+
+  res.cookie("token", authToken, {
+    httpOnly: true,
+    secure: false, // Secure in production
+  })
+
+  // Send the token in response
+  return res.status(200).json({
+    message: "Google Login Successful",
+    token: authToken,
+    user: { id: user._id, email: user.email, name: user.name },
+  });
+
 };

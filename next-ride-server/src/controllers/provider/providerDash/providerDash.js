@@ -4,7 +4,7 @@ import Providers from "../../../models/providersModel/providers.js";
 // ================================ Add Bikes =================================
 export const addBikes = async (req, res) => {
   const id = req.user;
-  console.log("files check",req.files)
+  console.log("files check", req.files);
   const {
     brand,
     name,
@@ -16,8 +16,10 @@ export const addBikes = async (req, res) => {
     // registrationCertificate,
     pickUpLocations,
     mainLocation,
+    year,
   } = req.body;
 
+  console.log("year", year);
   // console.log("hello", req.body);
   if (
     !mainLocation ||
@@ -28,44 +30,24 @@ export const addBikes = async (req, res) => {
     !kmDriven ||
     !mileage ||
     !DlNumber ||
+    !year ||
     // !registrationCertificate ||
     !pickUpLocations
   ) {
     return res.status(400).json({ success: false, message: `invalid input` });
   }
-
-  // const  bikeImage  = req.file.path;
-  // console.log("image", bikeImage)
-  // if (!bikeImage ) {
-  //   return res
-  //     .status(404)
-  //     .json({ status: false, message: `image files not found` });
-  // }
-
-  // const  registrationCertificate  = req.file.path;
-  // console.log("image", bikeImage)
-  // if (!bikeImage ) {
-  //   return res
-  //     .status(404)
-  //     .json({ status: false, message: `image files not found` });
-  // }
-
-  // const { bikeImage, registrationCertificate } = req.files;
   const { bikeImage, registrationCertificate } = req.files || {};
-  if (!bikeImage || !bikeImage[0] || !registrationCertificate || !registrationCertificate[0]) {
+  if (
+    !bikeImage ||
+    !bikeImage[0] ||
+    !registrationCertificate ||
+    !registrationCertificate[0]
+  ) {
     return res.status(400).json({
       success: false,
       message: "Both bikeImage and registrationCertificate are required.",
     });
   }
-  // console.log("bike", bikeImage[0].path)
-  // console.log("reg", registrationCertificate[0].path)
-  // if (!bikeImage) {
-  //   return res
-  //     .status(404)
-  //     .json({ status: false, message: `image files not found` });
-  // }
-
   const bikeExist = await Bikes.findOne({ DlNumber });
   if (bikeExist)
     return res.status(404).json({
@@ -84,6 +66,7 @@ export const addBikes = async (req, res) => {
     registrationCertificate: registrationCertificate[0].path,
     pickUpLocations,
     mainLocation,
+    year,
     providersId: id,
   });
 
@@ -126,6 +109,25 @@ export const getPendingBikes = async (req, res) => {
   });
 };
 
+//get all bikes
+export const getMyBikes = async (req, res) => {
+  const id = req.user;
+  if (!id) {
+    return res.status(404).json({ success: false, message: "please login" });
+  }
+  const Mybikes = await Bikes.find({ providersId: id });
+  if (!Mybikes) {
+    return res.status(404).json({ success: false, message: "no bikes found" });
+  }
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: `my bikes fetched successfully`,
+      data: Mybikes,
+    });
+};
+
 // ====================================================================
 // export const temp = async (req, res) => {
 //   const {brand, name} = req.body
@@ -137,17 +139,19 @@ export const getPendingBikes = async (req, res) => {
 export const getSpecificProvider = async (req, res) => {
   const providerId = req.user;
   if (!providerId) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: `provider id not found, please login `,
-      });
+    return res.status(400).json({
+      success: false,
+      message: `provider id not found, please login `,
+    });
   }
   const specificProvider = await Providers.findById(providerId);
   if (!specificProvider) {
     return res.status(400).json({ success: false, message: `please login ` });
   }
 
-  return res.status(200).json({success:true, message:`providers data fetched` , data:specificProvider})
+  return res.status(200).json({
+    success: true,
+    message: `providers data fetched`,
+    data: specificProvider,
+  });
 };

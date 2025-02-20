@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/Axios/axiosInstance"
+import { AxiosResponse } from "axios";
 
 
 export const  getSpecificUsers = async() =>{
@@ -7,6 +8,9 @@ export const  getSpecificUsers = async() =>{
  return data.data
 }
 
+
+
+//------------------------ admin -------------------------
 export const getAlluserData = async () => {
     const response = await axiosInstance.get("admin/getallusers")
     console.log("response", response)
@@ -36,12 +40,14 @@ export const handleAdminLogout = async() =>{
     return response.data
 }
 
-
-
 //bikes
-// export const getAllBikes = async ()=> {
-//     const response = await axiosInstance.get('')
-// }
+export const getAllpendingBikes = async () => {
+    const response = await axiosInstance.get("admin/getallpendingbikes")
+    console.log("pending bike data", response.data)
+    return response.data
+}
+
+// ----------------------------------------------------------------------------
 
 
 // ================= providers auth ==========================
@@ -51,10 +57,80 @@ export const handleAdminLogout = async() =>{
 //     return response.data
 // }
 
-
+// ======================================
 //providers
 export const specificProvider = async () => {
     const response = await axiosInstance.get('/provider/getspecificprovider')
     console.log("specific provider" , response)
     return response.data
 }
+
+//all bikes
+export const getMyBikes = async() => {
+    const response = await axiosInstance.get('provider/getmybikes')
+    // console.log("response", response.data.d)
+    return response.data
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//users --------------------------------------------
+//all approved or listed bikes
+export const getAllApprovedBikes = async () => {
+    const response = await axiosInstance.get('/user/getavailablebikes')
+    console.log("fetched bikes = ", response?.data)
+    return response.data
+}
+
+export const getSelectedBikes = async (bikeId : any) => {
+    const response = await axiosInstance.get(`/user/getelectedbike/${bikeId}`)
+    console.log("selected bikes", response.data )
+    return response.data
+}
+
+export const getNumberOfDays = (startDate: string, endDate: string): number => {
+    // Convert string dates to Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+  
+    // Get the difference in milliseconds
+    const differenceInMillis = end.getTime() - start.getTime();
+  
+    // Convert milliseconds to days
+    const days = differenceInMillis / (1000 * 3600 * 24);
+  
+    // Return the absolute number of days
+    return Math.floor(days);
+  };
+  
+
+  

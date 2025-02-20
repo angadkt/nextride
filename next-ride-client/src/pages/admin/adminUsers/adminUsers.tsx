@@ -43,14 +43,14 @@ export default function AdminUsers() {
   console.log("data", data?.data);
   if (isLoading)
     return (
-      <div className="bg-[#333333] h-screen flex justify-center items-center">
+      <div className="bg-[#333333] h-screen flex justify-center items-center w-full">
         <div className="w-20 h-20">
           <Loader />
         </div>
       </div>
     );
   if (error)
-    return <div className="bg-[#333333] h-screen">Error:{error.message}</div>;
+    return <div className="bg-[#333333] h-screen w-full">Error:{error.message}</div>;
   // =====================================================================
 
   const handleUpdateUser = (userId: any) => {
@@ -85,9 +85,9 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="bg-[#333333] flex ">
+    <div className="bg-[#333333] flex w-full h-screen">
       {/* <SideBar /> */}
-      <div className="flex-grow">
+      <div className="flex-grow ">
         <div className="ml-5 mt-4">
           <h1 className="text-3xl font-semibold text-white">Users</h1>
         </div>

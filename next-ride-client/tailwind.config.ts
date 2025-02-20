@@ -14,7 +14,7 @@ export default {
         foreground: "hsl(var(--foreground))",
         auth: "#2e2e2e",
         inputhover: "#835e49",
-        input: "hsl(var(--input))",
+        input: "#835e49",
         formBg: "#E9E9E9",
         adminBg: "#333333",
       },
@@ -23,6 +23,7 @@ export default {
         poppins: ["Poppins", "sans-serif"],
         robotoMono: ["Roboto Mono", "monospace"],
         fontKoushan: ["Kaushan Script", "serif"],
+        fontJosefin:["Josefin Sans","sans-serif"],
       },
       animation: {
         fadeIn: "fadeIn 1s ease-in-out",

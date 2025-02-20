@@ -46,7 +46,7 @@ export default function Navbar() {
 
 
   useEffect(() => {
-    if (pathName === "/profile") {
+    if (pathName === "/profile" || pathName?.includes("/findbike") || pathName?.includes("pro") ) {
       setScroll(true); 
     }else {
       setScroll(false);
@@ -54,7 +54,7 @@ export default function Navbar() {
   }, [pathName]);
   
   
-  if (pathName === "/login" || pathName === "/register" || pathName?.includes("/admin") || pathName?.includes("/provider")){
+  if (pathName === "/login" || pathName === "/register" || pathName?.includes("/admin") || pathName?.includes("/prologin") ||  pathName?.includes("/proregister") || pathName?.includes("/prov") ){
     return null;
   }
   
@@ -79,8 +79,8 @@ export default function Navbar() {
           </span>
         </div>
         <div className="flex-1  flex justify-center items-center">
-          <p
-            className={`font-audiowide md:text-2xl lg:text-4xl ${
+          <p onClick={()=>router.push('/')}
+            className={`cursor-pointer font-audiowide md:text-2xl lg:text-4xl ${
               scroll ? "text-black" : "text-white"
             } transition-colors duration-1000 ease-in-out`}
           >
@@ -89,8 +89,8 @@ export default function Navbar() {
         </div>
         <div className="flex-1  flex justify-end items-center ">
           <div
-            className={`md:border-2 border   rounded-full md:flex  flex  justify-center items-center md:font-semibold  text-xs px-3 py-2 flex-wrap md:text-base  ${
-              scroll ? "text-black" : "text-white"
+            className={`md:border-2 border   rounded-full md:flex  flex  justify-center items-center md:font-semibold  text-xs px-3 py-2 flex-wrap md:text-base transition-shadow duration-300   ${
+              scroll ? "text-black hover:shadow-[0_0_5px_black,0_0_10px_black,0_0_15px_black] " : "text-white hover:shadow-[0_0_10px_white,0_0_20px_white,0_0_30px_white]"
             } ${
               scroll ? "border-black" : "border-white"
             } transition-colors duration-1000 ease-in-out`}

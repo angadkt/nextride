@@ -10,7 +10,10 @@ const admin = new mongoose.Schema(
         password:{
             type:String,
             required:true
-        }
+        },
+        wallet:{
+            type:Number,
+        },
     }
 )
 

@@ -21,6 +21,10 @@ const bikes = new mongoose.Schema({
     type:String,
     required:true
   },
+  year:{
+    type:String,
+    required:true
+  },
   mileage:{
     type:String,
     required:true

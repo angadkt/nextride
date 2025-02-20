@@ -90,7 +90,6 @@ export const providerLogin = async (req, res) => {
   const ComparePassword = await comparePassword(
     password,
     existProvider.password
-    
   );
   if (!ComparePassword) {
     return res
@@ -114,19 +113,18 @@ export const providerLogin = async (req, res) => {
     });
   }
 
-  const token = generateToken(existProvider._id)
+  const token = generateToken(existProvider._id);
   // console.log(token)
 
-  res.cookie("token", token,{
+  res.cookie("token", token, {
     httpOnly: true,
     secure: false,
-  })
+  });
 
   return res
     .status(200)
     .json({ success: true, message: `welcome to the rental bike community` });
 };
-
 
 // ========================================================
 
@@ -144,4 +142,13 @@ export const verifyEmail = async (req, res) => {
   return res
     .status(200)
     .json({ success: true, message: `Email verified successfully` });
+};
+
+//logout
+export const providerLogout = async (req, res) => {
+  res.clearCookie("token");
+
+  return res
+    .status(200)
+    .json({ success: true, message: "provider Loggedout successfully" });
 };

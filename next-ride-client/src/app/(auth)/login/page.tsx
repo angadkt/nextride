@@ -8,28 +8,28 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { axiosInstance } from "@/Axios/axiosInstance";
 import { AxiosError } from "axios";
-import { signIn } from "next-auth/react";
-
-
+// import { signIn } from "next-auth/react";
+import { GoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 
 const userSignIn = async (values: any) => {
-  try{
+  try {
     const response = await axiosInstance.post("user/login", {
       email: values.email,
       password: values.password,
     });
-      console.log("response check", response)
+    console.log("response check", response);
     if (response.status === 200) {
       toast("user logginned successfully");
-    } else if(response.status === 202){
+    } else if (response.status === 202) {
       toast("admin loggined successfully");
     }
     return response.data;
-  }
-  catch(error : unknown){
+  } catch (error: unknown) {
     if (error instanceof AxiosError) {
       // TypeScript now knows the shape of `error.response`
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       console.log("Error message:", errorMessage);
       toast.error(errorMessage);
     } else {
@@ -41,18 +41,16 @@ const userSignIn = async (values: any) => {
 };
 
 export default function SignIn() {
-const router = useRouter();
-
-  
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: (values: { email: string; password: string }) =>
       userSignIn(values),
     onSuccess: (data) => {
-      if(data.role === "admin"){
-        router.replace("/adminhome")
-      }else{
-        router.replace('/')
+      if (data.role === "admin") {
+        router.replace("/adminhome");
+      } else {
+        router.replace("/");
         localStorage.setItem("isUser", "true");
       }
       console.log("data", data);
@@ -78,15 +76,33 @@ const router = useRouter();
     onSubmit: (values, { resetForm }) => {
       mutation.mutate(values);
       resetForm();
-      
     },
   });
 
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    console.log("Google Login Success:", credentialResponse.credential);
+    if (!credentialResponse.credential) {
+      console.error("Google credential is missing");
+      toast.error("Google Login Failed");
+      return;
+    }
+    try {
+      const res = await axiosInstance.post("/user/auth/google-login", {
+        token: credentialResponse.credential,
+      });
+      console.log("res", res);
+      localStorage.setItem("isUser", "true");
+      toast.success("Logged in successfully!");
+      router.push("/");
+    } catch (err) {
+      console.error("Google login failed", err);
+      toast.error("Google login failed.");
+    }
+  };
 
-  
 
   return (
-    <div className="bg-[url('https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?t=st=1738258764~exp=1738262364~hmac=f779a38b63244bf3b0b412527e94872bdefc9a3a0685197c8cc4cf21774d2bbe&w=1380')] bg-no-repeat bg-cover w-full h-screen flex justify-center items-center">
+    <div className="bg-[url('https://img.freepik.com/free-photo/dark-texture-surface_24837-340.jpg?t=st=1739963471~exp=1739967071~hmac=b093fde2fd05cc04062bb696ec27a5087d0d57572b33c79dcc2cf29fe7893776&w=1380')] bg-no-repeat bg-cover w-full h-screen flex justify-center items-center">
       <motion.div
         className="h-[850px] w-[1300px] bg-black rounded-3xl shadow-[4px_4px_10px_rgba(0,0,0,0.6)] flex overflow-hidden"
         initial={{ opacity: 0 }} // Start hidden
@@ -153,10 +169,10 @@ const router = useRouter();
               </button>
 
               {/* Google Login Button */}
-              <button
+              {/* <button
                 type="button"
                 className="w-full flex items-center justify-center gap-2 bg-white border border-input text-gray-700 py-2 px-4 rounded-full hover:inputhover transition-colors duration-200"
-                onClick={()=>signIn("google", { callbackUrl: "/" })}
+                onClick={googleLogin}
               >
                 <img
                   src="/images/google-logo.png"
@@ -164,7 +180,17 @@ const router = useRouter();
                   className="w-5 h-5"
                 />
                 Sign in with Google
-              </button>
+              </button> */}
+              <div >
+                <GoogleLogin
+                  // className="google-login-button"
+                  onSuccess={handleGoogleLogin}
+                  onError={() => {
+                    console.error("Google Login Failed");
+                    toast.error("Google login failed");
+                  }}
+                />
+              </div>
 
               {/* Sign Up Link */}
               <p className="text-sm text-gray-600">

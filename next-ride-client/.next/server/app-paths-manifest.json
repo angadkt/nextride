@@ -1,0 +1,8 @@
+{
+  "/page": "app/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/(auth)/register/page": "app/(auth)/register/page.js",
+  "/(user)/findbikes/page": "app/(user)/findbikes/page.js",
+  "/(user)/findbikes/[id]/page": "app/(user)/findbikes/[id]/page.js"
+}

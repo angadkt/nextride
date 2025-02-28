@@ -3,7 +3,7 @@ import { adminLogout, adminRegister } from '../../controllers/admin/adminAuth/ad
 import { tryCatch } from '../../middleware/tryCatch/tryCatch.js'
 import {  blockUserAndBlock, deleteUser, getAllUsers } from '../../controllers/admin/adminDash/adminUser.js'
 import {  approveProviderRequest, getApprovedProviders, getUnApprovedProviders, } from '../../controllers/admin/adminDash/adminProvider.js'
-import { approveBikes, getAllPendingBikesAdmin } from '../../controllers/admin/adminBikes/adminBikes.js'
+import { approveBikes, deleteBikeRequest, getAllPendingBikesAdmin } from '../../controllers/admin/adminBikes/adminBikes.js'
 
 
 
@@ -33,5 +33,6 @@ router.put('/approveRequest/:id',tryCatch(approveProviderRequest))
 //admin bikes
 router.put('/approvebike/:bikeId',tryCatch(approveBikes))
 router.get('/getallpendingbikes', tryCatch(getAllPendingBikesAdmin))
+router.delete('/deleterequest/:id' , tryCatch(deleteBikeRequest ))
 
 export default router

@@ -1,11 +1,15 @@
 // "use client";
 
-import PriceModal from "@/components/bikePriceModal/adminPriceModal";
+import ReqTableModal from "@/components/reqTableModal/reqTableModal";
+
+
+
 
 export default function temp() {
+  
   return (
     <>
-    <PriceModal />  
+     <ReqTableModal />
     </>
   );
 }

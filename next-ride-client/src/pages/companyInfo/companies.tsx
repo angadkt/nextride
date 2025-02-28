@@ -39,31 +39,14 @@ export default function Companies() {
     { name: "Truimp", link: Triumph },
     { name: "Bmw", link: Bmw },
     { name: "Aprilia", link: Aprilia },
-    // { name: "Terms of Service", link: "/terms-of-service" },
-    // { name: "Support", link: "/support" },
-    // { name: "Login", link: "/login" },
-    // { name: "Bajaj", link: "/home" },
-    // { name: "About", link: "/about" },
-    // { name: "Services", link: "/services" },
-    // { name: "Contact", link: "/contact" },
-    // { name: "Blog", link: "/blog" },
-    // { name: "Portfolio", link: "/portfolio" },
-    // { name: "Pricing", link: "/pricing" },
-    // { name: "FAQ", link: "/faq" },
-    // { name: "Testimonials", link: "/testimonials" },
-    // { name: "Careers", link: "/careers" },
-    // { name: "Team", link: "/team" },
-    // { name: "Privacy Policy", link: "/privacy-policy" },
-    // { name: "Terms of Service", link: "/terms-of-service" },
-    // { name: "Support", link: "/support" },
-    // { name: "Login", link: "/login" },
+   
     
   ];
   return (
-    <div className="bg-white w-full h-screen px-[112px] py-28 ">
+    <div className="bg-white w-full min-h-screen md:px-[112px] px-10 py-28 ">
       <div className="bg-white  w-full h-full flex flex-col gap-3">
         <div>
-          <p className="text-3xl">Brands we do,</p>
+          <p className="text-3xl font-fontJosefin">Brands we do,</p>
         </div>
         <div className=" w-full h-full flex flex-wrap gap-[47px]   justify-center items-center">
         {

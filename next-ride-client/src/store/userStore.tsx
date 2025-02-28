@@ -1,3 +1,4 @@
+import { count, time } from "console";
 import { create } from "zustand";
 
 interface storeState {
@@ -8,10 +9,16 @@ interface storeState {
   pickupLocation: string;
   pickupDate: string;
   dropoffDate: string;
+  pickUpTime: string;
+  dropOfTime: string;
   setPickupLocation: (location: string) => void;
   setPickupDate: (date: string) => void;
   setDropoffDate: (date: string) => void;
-  
+  setPicktime: (data: string) => void;
+  setdropOfTime: (data: string) => void;
+  reqCount: number;
+  setReqCount: (count: number) => void;
+  // selectedReq : any
 }
 
 const useStore = create<storeState>((set) => ({
@@ -22,9 +29,16 @@ const useStore = create<storeState>((set) => ({
   pickupLocation: "",
   pickupDate: "",
   dropoffDate: "",
+  pickUpTime: "",
+  dropOfTime: "",
   setPickupLocation: (location) => set({ pickupLocation: location }),
   setPickupDate: (date) => set({ pickupDate: date }),
   setDropoffDate: (date) => set({ dropoffDate: date }),
+  setPicktime: (time) => set({ pickUpTime: time }),
+  setdropOfTime: (time) => set({ dropOfTime: time }),
+  reqCount: 0,
+  setReqCount: (count) => set({ reqCount: count }),
+  // selectedReq : ""
 }));
 
 export default useStore;

@@ -2,10 +2,12 @@
 
 import PriceModal from "@/components/bikePriceModal/adminPriceModal";
 import Loader from "@/components/loader/loader";
+import ReqTableModal from "@/components/reqTableModal/reqTableModal";
 import { getAllpendingBikes } from "@/service/fetch/fetchData";
 import useStore from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface BikeData {
   _id:any;
@@ -28,11 +30,16 @@ interface BikeData {
 }
 
 export default function BikeRequests() {
+  const [selectedReq , setSelectedReq] = useState()
   const { isClose, handleIsClose } = useStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["pending-bikes"],
     queryFn: getAllpendingBikes,
   });
+
+  // console.log("req data" , )
+  // setReqCount(data?.data.length)
+  console.log("total bike data", data?.data)
 
   if (isLoading)
     return (
@@ -51,6 +58,11 @@ export default function BikeRequests() {
     );
   }
 
+  const handleClick= (req:any) => {
+    setSelectedReq(req)
+    handleIsClose()
+  }
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4 text-start text-white">
@@ -60,7 +72,7 @@ export default function BikeRequests() {
         <table className="min-w-full border border-blue-900 shadow-lg bg-[#3333] text-white rounded-lg">
           <thead>
             <tr className="bg-gray-800 text-white">
-              <th className="px-4 py-2">No</th>
+              <th className="px-4 py-2x`">No</th>
               <th className="px-4 py-2">Brand</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Engine</th>
@@ -77,7 +89,7 @@ export default function BikeRequests() {
             {data?.data.map((bike: BikeData, index: number) => (
               <tr
                 key={bike.DlNumber}
-                className="border-b border-blue-800 hover:bg-blue-50 hover:text-black transition"
+                className="border-b border-blue-800 hover:bg-blue-50 hover:text-black transition h-20"
               >
                 <td className="px-4 py-2 text-center">{index + 1}</td>
                 <td className="px-4 py-2 text-center">{bike.brand}</td>
@@ -107,13 +119,13 @@ export default function BikeRequests() {
                 </td>
                 <td className="px-4 py-2 text-center">
                   <button
-                    onClick={handleIsClose}
-                    className=" text-sm px-2 py-1 rounded-lg bg-green-500 hover:bg-green-900 hover:text-white"
+                    onClick={()=>handleClick(bike)}
+                    className=" text-sm px-2 py-1  bg-green-500 text-white"
                   >
                     Approve Vehicle
                   </button>
                 </td>
-                {!isClose && <PriceModal bikeId={bike._id} />}
+                {!isClose && <ReqTableModal bikeData={selectedReq} />}
               </tr>
             ))}
           </tbody>

@@ -1,10 +1,12 @@
 "use client";
 
 import BikeRequests from "@/pages/admin/AdminBikes/bikeRequests";
+import useStore from "@/store/userStore";
 import { useState } from "react";
 
 export default function ViewBikes() {
-  const [state, setState] = useState("");
+  // const { reqCount } = useStore()
+  const [state, setState] = useState("bikerequest");
 
   return (
     <div className="bg-[#333333] w-full h-screen font-poppins">
@@ -16,25 +18,25 @@ export default function ViewBikes() {
         >
           <button
             onClick={() => setState("allbikes")}
-            className={`${state == "allbikes" ? "bg-[#6A42AB]" : "bg-[#333]"} py-1 px-6 rounded hover:bg-[#6A42AB]`}
+            className={`${state == "allbikes" ? "border-b-4 border-[#6A42AB]" : "bg-none"}  px-6 h-full rounded `}
           >
             All Bikes
           </button>
           <button
             onClick={() => setState("bikerequest")}
-            className={`${state == "bikerequest" ? "bg-[#6A42AB]" : "bg-[#333]"} py-1 px-6 rounded hover:bg-[#6A42AB]`}
+            className={`${state == "bikerequest" ? "border-b-4 border-[#6A42AB]" : "bg-none"}  px-6 rounded  h-full`}
           >
-            Bike requests
+            Bike requests 
           </button>
           <button
-            onClick={() => setState("allbikes")}
-            className={`${state == "allkes" ? "bg-[#6A42AB]" : "bg-[#333]"} py-1 px-6 rounded hover:bg-[#6A42AB]`}
+            onClick={() => setState("allkesr")}
+            className={`${state == "allkesr" ? "border-b-4 border-[#6A42AB]" : "bg-none"}  px-6 rounded  h-full`}
           >
             Loading
           </button>
           <button
-            onClick={() => setState("bikerequest")}
-            className={`${state == "alikes" ? "bg-[#6A42AB]" : "bg-[#333]"} py-1 px-6 rounded hover:bg-[#6A42AB]`}
+            onClick={() => setState("alikes")}
+            className={`${state == "alikes" ? "border-b-4 border-[#6A42AB]" : "bg-none"}  px-6 rounded  h-full text-center`}
           >
             Loading
           </button>

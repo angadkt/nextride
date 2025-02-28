@@ -41,22 +41,22 @@ export default function ProviderSideBar() {
   ];
 
   // =========== getting specifiic provider data ===========
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["providersdata"],
-    queryFn: specificProvider,
-  });
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ["providersdata"],
+  //   queryFn: specificProvider,
+  // });
 
-  if (isLoading)
-    return (
-      <div className="bg-[#333333] h-screen flex justify-center items-center">
-        <div className="w-20 h-20">
-          <Loader />
-        </div>
-      </div>
-    );
-  if (error) {
-    return <div className="bg-[#333333] h-screen">Error:{error.message}</div>;
-  }
+  // if (isLoading)
+  //   return (
+  //     <div className="bg-[#333333] h-screen flex justify-center items-center">
+  //       <div className="w-20 h-20">
+  //         <Loader />
+  //       </div>
+  //     </div>
+  //   );
+  // if (error) {
+  //   return <div className="bg-[#333333] h-screen">Error:{error.message}</div>;
+  // }
 
   if (pathName?.includes("login") || pathName?.includes("/proregister")) {
     return null;
@@ -107,7 +107,7 @@ export default function ProviderSideBar() {
         <div className="w-full   px-3 flex items-center gap-3 border rounded-lg shadow-2xl">
           <Image src={Profile} width={40} height={40} alt="load" />
           <div className="flex flex-col text-sm">
-            <h1 className="text-black text-lg">{data.data.username}</h1>
+            <h1 className="text-black text-lg">provider</h1>
             <button onClick={handleLogout} className="border px-2 py-1">
               Log Out
             </button>

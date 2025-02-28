@@ -15,7 +15,11 @@ import {
 } from "../../controllers/user/authcontroller/authcontroller.js";
 import {
   availableBikes,
+  bookBike,
+  findBike,
+  getMainLocation,
   getSelectedBike,
+  getTopBikes,
 } from "../../controllers/user/bookingController/bookingController.js";
 
 const router = express.Router();
@@ -31,7 +35,13 @@ router.post("/auth/google-login", tryCatch(googleAuth));
 //bikes
 router.get("/getavailablebikes", isAuthenticate, tryCatch(availableBikes));
 router.get("/getelectedbike/:id", isAuthenticate, tryCatch(getSelectedBike));
+router.get("/topbikes", tryCatch(getTopBikes))
+router.get("/findbike", tryCatch(findBike))
+router.get("/mainlocations", tryCatch(getMainLocation))
 
 // router.get("/get")
+
+//bike-booking
+router.post("/bookmybike", tryCatch(bookBike))
 
 export default router;

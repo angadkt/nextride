@@ -5,20 +5,28 @@ const bookingSchema = mongoose.Schema(
     userId: {
       type: mongoose.Types.ObjectId,
       ref: "users",
-      required: true,
+      // required: true,
     },
     bikeId: {
       type: mongoose.Types.ObjectId,
       ref: "bikes",
-      required: true,
+      // required: true,
+    },
+    mainLocation:{
+      type : String,
+      // required : true
+    },
+    pickUpLocation:{
+      type: String,
+      // required:true
     },
     pickUpDate: {
       type: Date,
-      required: true,
+      // required: true,
     },
     dropOffDate: {
       type: Date,
-      required: true,
+      // required: true,
     },
     pickUpTime: {
       type: String,
@@ -28,14 +36,14 @@ const bookingSchema = mongoose.Schema(
       type: String,
       // required: true,
     },
-    coast:{
+    totalCost:{
       type:String,
-      required:true
+      // required:true
     },
     providersId:{
       type:mongoose.Types.ObjectId,
       ref:"Providers",
-      required:true
+      // required:true
     }
   },
   { timestamps: true }

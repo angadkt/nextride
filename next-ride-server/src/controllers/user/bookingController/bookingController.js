@@ -3,8 +3,25 @@ import Bikes from "../../../models/bikeModel/bikesModel.js";
 import Booking from "../../../models/bookingModel/bookingModel.js";
 
 export const bookBike = async (req, res) => {
-  const userId = req.user
-  const { bikeId, pickUpDate, dropOffDate, pickUpTime, dropOffTime ,cost ,providersId } = req.body;
+  const userId = req.user;
+  const {
+    bikeId,
+    pickUpDate,
+    dropOffDate,
+    pickUpTime,
+    dropOffTime,
+    mainLocation,
+    pickUpLocation,
+    providersId,
+    totalCost,
+  } = req.body;
+
+  console.log("req.body", totalCost)
+
+
+  if (!totalCost || isNaN(totalCost)) {
+    return res.status(400).json({ success: false, message: "Invalid total cost." });
+  }
 
   const existbooking = await Booking.findOne({
     userId,
@@ -14,7 +31,7 @@ export const bookBike = async (req, res) => {
   if (existbooking) {
     return res
       .status(404)
-      .json({ success: false, message: `you already have live booking` });
+      .json({ success: false, message: `you already have booking on the date` });
   }
 
   const booking = new Booking({
@@ -24,23 +41,29 @@ export const bookBike = async (req, res) => {
     dropOffDate,
     pickUpTime,
     dropOffTime,
-    cost,
+    mainLocation,
+    pickUpLocation,
     providersId,
+    totalCost : Number(totalCost)
   });
   await booking.save();
 
-  const isAdmin = await Admin.findOne()
-  if(isAdmin){
+  const isAdmin = await Admin.findOne();
+  if (!isAdmin) {
     return res
-    .status(404)
-    .json({ success: false, message: `admin data fetching failed` });
+      .status(404)
+      .json({ success: false, message: `admin data fetching failed` });
   }
 
-  isAdmin.wallet += cost
+  isAdmin.wallet += Number(totalCost);
 
-  await isAdmin.save()
+  await isAdmin.save();
 
-  res.status(200).json({ success: true, message: "bike booked successfully",data:booking });
+  res.status(200).json({
+    success: true,
+    message: "bike booked successfully",
+    data: booking,
+  });
 };
 
 // ======================================================
@@ -75,7 +98,10 @@ export const availableBikes = async (req, res) => {
 export const getSelectedBike = async (req, res) => {
   const userId = req.user;
   if (!userId) {
-    return res.status(400).json({ success: false, message: `user not found, please login to continue` });
+    return res.status(400).json({
+      success: false,
+      message: `user not found, please login to continue`,
+    });
   }
   const bikeId = req.params.id;
   if (!bikeId) {
@@ -86,11 +112,58 @@ export const getSelectedBike = async (req, res) => {
     return res.status(400).json({ success: false, message: `bike not found` });
   }
 
+  return res.status(200).json({
+    success: true,
+    message: `selected bike data fetched`,
+    data: selBike,
+  });
+};
+
+//getTopbikes
+export const getTopBikes = async (req, res) => {
+  const allBikes = await Bikes.find();
+  if (!allBikes) {
+    return res.status(400).json({ success: false, message: "bikes not found" });
+  }
+  const topBikes = allBikes.filter((item) => item.price > 2000);
+  if (!topBikes) {
+    return res.status(400).json({ success: false, message: `no bikes found` });
+  }
+  return res.json({ topBikes });
+};
+
+//find bikes
+export const findBike = async (req, res) => {
+  const { location } = req.query; // location is an object
+  if (!location) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Location is required" });
+  }
+
+  const availableBikes = await Bikes.find({
+    isavailable: true,
+    isApproved: true,
+  });
+
+  if (availableBikes.length === 0) {
+    return res.status(404).json({ success: false, message: "No bikes found" });
+  }
+
+  const filteredBikes = availableBikes.filter(
+    (item) => item.mainLocation === location
+  );
+
   return res
     .status(200)
-    .json({
-      success: true,
-      message: `selected bike data fetched`,
-      data: selBike,
-    });
+    .json({ success: true, message: "Bikes found", data: filteredBikes });
+};
+
+//getMainlocations
+export const getMainLocation = async (req, res) => {
+  const mainLocations = await Bikes.distinct("mainLocation")
+  if (!mainLocations) {
+    return res.status(400).json({ message: "No locations found" });
+  }
+  return res.status(200).json({data:mainLocations});
 };

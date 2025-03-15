@@ -1,3 +1,5 @@
+'use client'
+
 import Loader from "@/components/loader/loader";
 import { getMyBikes } from "@/service/fetch/fetchData";
 import { useQuery } from "@tanstack/react-query";

@@ -28,26 +28,27 @@ export default function TopBikesSection() {
   }
 
   return (
-    <div className="w-full   mt-14 md:px-[112px] px-10 py-10">
-      <div className="w-full h-full ">
-        <h1 className="text-2xl font-fontJosefin">Top Bikes</h1>
-        <div className="w-full   flex  flex-wrap">
-          {AllBikes.map((item: any) => (
-            <div key={item._id} className="relative w-1/4 p-4 min-h-96">
-              <div className="h-full border flex justify-center items-center flex-col bg-white border-black/30 rounded-md">
-                <Image
-                  src={item.bikeImage}
-                  width={300}
-                  height={300}
-                  className="object-contain w-auto h-full"
-                  alt="load"
-                />
-                <div></div>
-              </div>
+    <div className="w-full mt-14 px-6 md:px-[112px] py-10">
+    <div className="w-full">
+      <h1 className="text-3xl font-semibold font-fontJosefin mb-6">Top Bikes</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {AllBikes.map((item: any) => (
+          <div key={item._id} className="relative p-4 min-h-96">
+            <div className="h-full border border-gray-300 flex flex-col items-center bg-white rounded-lg shadow-md p-4">
+              <Image
+                src={item.bikeImage}
+                width={250}
+                height={250}
+                className="object-contain w-full h-56"
+                alt="Bike Image"
+              />
+              <h2 className="mt-4 text-lg font-medium">{item.bikeName}</h2>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
+  </div>
+  
   );
 }

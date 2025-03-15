@@ -121,6 +121,7 @@ export const findBikes = async (location:any) =>{
   const resposnse  =  await axiosInstance.get(`/user/findbike`,{
     params : {location}
   })
+
   return resposnse.data
 }
 
@@ -130,3 +131,9 @@ export const getMainLocations = async () => {
   return response.data
 }
 
+
+//getBookingsDataperUer
+export const getBookingsData = async() => {
+  const response = await axiosInstance.get("/user/getmybookings")
+  return response.data?.data
+}

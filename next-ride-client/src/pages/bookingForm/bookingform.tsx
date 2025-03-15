@@ -4,12 +4,10 @@
 //   "Kochi",
 // ];
 
-import Loader from "@/components/loader/loader";
 import { getMainLocations } from "@/service/fetch/fetchData";
 import useStore from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function BookingForm() {
@@ -22,33 +20,37 @@ export default function BookingForm() {
     setPickupDate,
     setDropoffDate,
   } = useStore();
-  const [filteredLocations, setFilteredLocations] =
-    useState<string[]>();
-  const [showDropdown, setShowDropdown] = useState(false);
+  // const [filteredLocations, setFilteredLocations] =
+  //   useState<string[]>();
+  // const [showDropdown, setShowDropdown] = useState(false);
  
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    if (!pickupDate) setPickupDate(today);
-    if (!dropoffDate) setDropoffDate(today);
-  }, [pickupDate, dropoffDate, setPickupDate, setDropoffDate]);
+  // useEffect(() => {
+  //   const today = new Date().toISOString().split("T")[0];
+  //   if (!pickupDate) setPickupDate(today);
+  //   if (!dropoffDate) setDropoffDate(today);
+  // }, [pickupDate, dropoffDate, setPickupDate, setDropoffDate]);
 
-  useEffect(() => {
-    console.log("Pickup Location:", pickupLocation);
-    console.log("Pickup Date:", pickupDate);
-    console.log("Dropoff Date:", dropoffDate);
-  }, [pickupLocation, pickupDate, dropoffDate]);
+  // useEffect(() => {
+  //   console.log("Pickup Location:", pickupLocation);
+  //   console.log("Pickup Date:", pickupDate);
+  //   console.log("Dropoff Date:", dropoffDate);
+  // }, [pickupLocation, pickupDate, dropoffDate]);
 
+
+
+
+  // ======================================================
   const { data, isLoading, error } = useQuery({
     queryKey: ["main-locations"],
     queryFn: getMainLocations,
   });
-  if (isLoading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="w-full h-screen flex justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
   if (error) {
     toast(`fetching unsuccessful.${error.message}`);
     return (
@@ -57,24 +59,34 @@ export default function BookingForm() {
       </div>
     );
   }
+  // ============================================================
+
+
+  const handleFindBikes = () => {
+    if(!pickupLocation || pickupLocation == ""){
+      toast.error("please select the location")
+      return
+    }
+    router.push("/findbikes")
+  }
 
   const locations = data?.data;
 
   return (
-    <div className="w-full h-[130px] px-5 md:px-80 bg-transparent z-10 absolute -bottom-14">
-      <div className="bg-formBg w-full h-full flex flex-wrap md:flex-nowrap items-center px-5 md:px-10 rounded-2xl shadow-xl justify-center gap-3 md:gap-5">
-        <div className="flex flex-col gap-1 w-full md:w-auto">
+    <div className="w-full h-auto  px-5 xl:px-80 bg-transparent z-10 absolute -bottom-14">
+      <div className="bg-formBg w-full h-full flex flex-wrap md:flex-nowrap items-center px-5 md:px-10 rounded-2xl shadow-xl justify-center gap-3 md:gap-5 py-5">
+        <div className="flex flex-col gap-1 w-full md:w-auto ">
           <p>Pick-up Location</p>
           <select
             value={pickupLocation}
             onChange={(e) => setPickupLocation(e.target.value)}
-            className="border md:w-[30rem] w-full md:h-14 h-12 rounded-xl shadow p-4"
+            className="border xl:w-[30rem] max-w-80 md:h-14 h-12 rounded-xl shadow p-4"
           >
             <option value="" disabled>
               Select a location
             </option>
-            {locations.map((loc:any, index:any) => (
-              <option key={index} value={loc}>
+            {locations?.map((loc:any, index:any) => (
+              <option key={index + 1} value={loc}>
                 {loc}
               </option>
             ))}
@@ -105,7 +117,7 @@ export default function BookingForm() {
 
         <div className="text-white">
           <button
-            onClick={() => router.push("/findbikes")}
+            onClick={handleFindBikes}
             className="bg-[#0F0F0F] p-3 px-4 rounded-xl shadow"
           >
             Find a vehicle

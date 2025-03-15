@@ -4,23 +4,20 @@ import ProviderSideBar from "@/pages/provider/providerSideBar/providerSidebar";
 
 
 
-export default function RootLayout({
+export default function ProviderLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html >
-       
-      <body>
-        {/* ✅ Moved <p> inside <body> to prevent hydration error */}
-        <p suppressHydrationWarning={true}></p>
+   
 
-        <ProviderSideBar />
+       <>
+       <ProviderSideBar />
         
         {/* ✅ Single <main> (removed nesting) */}
         <main>{children}</main>
-      </body>
-    </html>
+       </>
+     
   );
 }

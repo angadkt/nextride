@@ -31,6 +31,7 @@ const userSignIn = async (values: any) => {
       const errorMessage =
         error.response?.data?.message || "Something went wrong";
       console.log("Error message:", errorMessage);
+      console.log("error", error)
       toast.error(errorMessage);
     } else {
       // Handle non-Axios errors

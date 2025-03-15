@@ -51,7 +51,7 @@ export default function Companies() {
         <div className=" w-full h-full flex flex-wrap gap-[47px]   justify-center items-center">
         {
             brands.map((brand, index)=>(
-                <div key={index} className="w-60 h-60  rounded-md   flex justify-center items-center shadow-lg border transition-transform duration-500 hover:scale-110 hover:shadow-xl hover:rotate-3   ">
+                <div key={index + 1} className="w-60 h-60  rounded-md   flex justify-center items-center shadow-lg border transition-transform duration-500 hover:scale-110 hover:shadow-xl hover:rotate-3   ">
                    <div className='flex flex-col justify-center items-center '>
                    <Image width={100} height={10} src={brand.link} alt='load' />
                    {/* <p>{brand.name}</p> */}

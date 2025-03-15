@@ -58,6 +58,14 @@ export default function BikeRequests() {
     );
   }
 
+  if(data?.data.length === 0){
+    return (
+      <div>
+        <h1>No data found</h1>
+      </div>
+    )
+  }
+
   const handleClick= (req:any) => {
     setSelectedReq(req)
     handleIsClose()
@@ -88,7 +96,7 @@ export default function BikeRequests() {
           <tbody>
             {data?.data.map((bike: BikeData, index: number) => (
               <tr
-                key={bike.DlNumber}
+                key={bike._id}
                 className="border-b border-blue-800 hover:bg-blue-50 hover:text-black transition h-20"
               >
                 <td className="px-4 py-2 text-center">{index + 1}</td>

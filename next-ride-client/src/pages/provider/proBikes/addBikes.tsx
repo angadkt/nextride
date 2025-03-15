@@ -310,7 +310,7 @@ export default function AddBikeForm() {
                 <div className="flex flex-col gap-3">
                   <label>Pickup Locations</label>
                   {values.pickupLocations.map((location, index) => (
-                    <div key={index} className="flex gap-2">
+                    <div key={index + 1} className="flex gap-2">
                       <Field
                         className="w-80 border p-2"
                         name={`pickupLocations[${index}]`}
@@ -426,7 +426,7 @@ export default function AddBikeForm() {
                   Select Pickup Location
                 </option>
                 {values.pickupLocations.map((location, index) => (
-                  <option key={index} className="text-gray-700">
+                  <option key={index + 1} className="text-gray-700">
                     {location}
                   </option>
                 ))}

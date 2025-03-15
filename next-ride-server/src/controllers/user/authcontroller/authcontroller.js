@@ -62,7 +62,6 @@ export const login = async (req, res) => {
 
   // checking in userSchema
   const userExist = await Users.findOne({ email });
-
   // =========================================================================
   //checking in adminSchema
   const isAdmin = await Admin.findOne({ email });
@@ -162,3 +161,8 @@ export const googleAuth = async (req, res) => {
   });
 
 };
+
+
+export const handleLogout = async(req, res) => {
+  
+}

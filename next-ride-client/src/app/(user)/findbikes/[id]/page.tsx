@@ -5,15 +5,27 @@ import { getNumberOfDays, getSelectedBikes } from "@/service/fetch/fetchData";
 import useStore from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function BookingPage() {
-  const { pickupLocation, pickupDate, dropoffDate, pickUpTime, dropOfTime } =
-    useStore();
+  const {
+    pickupLocation,
+    pickupDate,
+    dropoffDate,
+    pickUpTime,
+    dropOfTime,
+    subLocation,
+    setPickupLocation,
+    setPicktime,
+    setdropOfTime,
+    setSubLocation,
+  } = useStore();
+  const router = useRouter();
   const numberOfDays = getNumberOfDays(pickupDate, dropoffDate);
-  console.log(numberOfDays);
 
+  console.log("hello", pickupLocation);
   //   if(Number.isNaN(numberOfDays)){
   //     return (
   //         <div className="w-screen h-screen justify-center items-center">
@@ -30,6 +42,7 @@ export default function BookingPage() {
     queryFn: ({ queryKey }) => getSelectedBikes(queryKey[1]),
     enabled: !!bikeId,
   }); //passing a value as argument to the query function
+  const providersId = data?.data?.providersId;
   if (isLoading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -46,24 +59,37 @@ export default function BookingPage() {
   }
 
   const tax = data?.data.price * (18 / 100);
-  const totalCoast = Number(Math.abs(data?.data.price * numberOfDays + tax + 500));
+  const totalCoast = Number(
+    Math.abs(data?.data.price * numberOfDays + tax + 500)
+  );
 
   const handleBooking = async () => {
-    console.log("total cost ",totalCoast)
+    if (!pickUpTime || !dropOfTime) {
+      toast.error("start from the beggining");
+      router.push("/");
+      return;
+    }
     try {
       const response = await axiosInstance.post("/user/bookmybike", {
         bikeId,
         mainLocation: pickupLocation,
-        pickUpDate:pickupDate,
-        dropOffDate:dropoffDate,
+        pickUpDate: pickupDate,
+        dropOffDate: dropoffDate,
         pickUpTime,
-        dropOffTime:dropOfTime,
-        totalCost:totalCoast,
+        pickUpLocation: subLocation,
+        dropOffTime: dropOfTime,
+        totalCost: totalCoast,
+        providersId,
       });
-      console.log(response, "response");
+      toast.success(`${totalCoast} paid`)
+      toast.success(response.data.message);
+      router.push("/bookings");
+      setPicktime("");
+      setdropOfTime("");
+      setSubLocation("");
     } catch (err: any) {
       console.log("error occured", err);
-      toast(err.response.data.message);
+      toast.error(err.response.data.message);
     }
   };
 
@@ -92,6 +118,16 @@ export default function BookingPage() {
                 {data?.data.brand} {data?.data.name}
               </h1>
               <h2 className="text-xl text-gray-600">{data?.data.year}</h2>
+              <div>
+                <h2 className="font-poppins ">
+                  <span className="text-gray-600">Main Location : </span>
+                  {pickupLocation}
+                </h2>
+                <h2 className="font-poppins ">
+                  <span className="text-gray-600">Pick up Location : </span>
+                  {subLocation}
+                </h2>
+              </div>
             </div>
 
             {/* Pricing and Dates Info */}

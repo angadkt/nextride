@@ -105,7 +105,7 @@ export default function SideBar() {
             </h1>
           ) : null}
         </div>
-        <div className="mt-10  flex gap-5 p-2 relative">
+        <div className="mt-10  flex gap-5 p-2 relative cursor-pointer">
           <Image src={dashboardIcon} width={25} height={25} alt="loading" />
 
           {/* <div className="ml-5"> */}
@@ -127,7 +127,7 @@ export default function SideBar() {
         </div>
         <div
           onClick={() => handleRouteOnClick("adminBikes")}
-          className={` p-2 flex gap-5 ${
+          className={` p-2 flex gap-5 cursor-pointer ${
             pathName === "/adminhome/adminBikes" ? "bg-[#6A42AB]" : null
           } rounded-xl`}
         >

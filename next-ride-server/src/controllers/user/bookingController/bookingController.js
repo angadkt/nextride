@@ -3,7 +3,13 @@ import Bikes from "../../../models/bikeModel/bikesModel.js";
 import Booking from "../../../models/bookingModel/bookingModel.js";
 
 export const bookBike = async (req, res) => {
-  const userId = req.user;
+  const userId = req.user._id;
+  if (!userId) {
+    return res
+      .status(404)
+      .json({ success: false, message: "user not found please login" });
+  }
+
   const {
     bikeId,
     pickUpDate,
@@ -12,26 +18,26 @@ export const bookBike = async (req, res) => {
     dropOffTime,
     mainLocation,
     pickUpLocation,
-    providersId,
     totalCost,
+    providersId,
   } = req.body;
 
-  console.log("req.body", totalCost)
-
-
   if (!totalCost || isNaN(totalCost)) {
-    return res.status(400).json({ success: false, message: "Invalid total cost." });
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid total cost." });
   }
 
   const existbooking = await Booking.findOne({
     userId,
-    dropOffDate: { $gte: new Date() },
+    dropOffDate: { $gte: pickUpDate },
   });
 
   if (existbooking) {
-    return res
-      .status(404)
-      .json({ success: false, message: `you already have booking on the date` });
+    return res.status(404).json({
+      success: false,
+      message: `you already have booking on the date`,
+    });
   }
 
   const booking = new Booking({
@@ -44,7 +50,7 @@ export const bookBike = async (req, res) => {
     mainLocation,
     pickUpLocation,
     providersId,
-    totalCost : Number(totalCost)
+    totalCost: Number(totalCost),
   });
   await booking.save();
 
@@ -135,6 +141,7 @@ export const getTopBikes = async (req, res) => {
 //find bikes
 export const findBike = async (req, res) => {
   const { location } = req.query; // location is an object
+  console.log("location", location);
   if (!location) {
     return res
       .status(400)
@@ -161,9 +168,25 @@ export const findBike = async (req, res) => {
 
 //getMainlocations
 export const getMainLocation = async (req, res) => {
-  const mainLocations = await Bikes.distinct("mainLocation")
+  const mainLocations = await Bikes.distinct("mainLocation");
   if (!mainLocations) {
     return res.status(400).json({ message: "No locations found" });
   }
-  return res.status(200).json({data:mainLocations});
+  return res.status(200).json({ data: mainLocations });
+};
+
+// ==================================================
+
+
+//get bookings bikes data per user
+export const getBookedBikes = async (req, res) => {
+  const usersId = req.user;
+  if (!usersId) {
+    return res.status(400).json({ message: "user id not found" });
+  }
+  const bookingsData = await Booking.find({userId:usersId}).populate("bikeId")
+  if(!bookingsData){
+    return res.status(400).json({message:"your booking data not found"})
+  }
+  return res.status(200).json({message:"fetching bookings data successful", data:bookingsData})
 };

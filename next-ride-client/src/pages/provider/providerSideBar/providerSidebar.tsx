@@ -88,10 +88,10 @@ export default function ProviderSideBar() {
           </p>
         </div>
         <div className="w-full h-full bg-transparent flex flex-col gap-4 mt-10">
-          {items.map((x: any) => (
+          {items?.map((x: any , index:number) => (
             <div
               onClick={() => router.push(`${x.path}`)}
-              key={x.name}
+              key={index + 1}
               className={` tracking-wider font-poppins font-base flex items-center gap-3 py-2  px-3 rounded-lg cursor-pointer text-gray-500 ${
                 pathName == x.path && "bg-[#5D5FEF] text-white"
               } `}

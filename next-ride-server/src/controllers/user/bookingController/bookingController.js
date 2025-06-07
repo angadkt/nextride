@@ -30,7 +30,7 @@ export const bookBike = async (req, res) => {
 
   const existbooking = await Booking.findOne({
     userId,
-    dropOffDate: { $gte: pickUpDate },
+    dropOffDate: pickUpDate,
   });
 
   if (existbooking) {
@@ -87,6 +87,7 @@ export const availableBikes = async (req, res) => {
   const availableBikes = await Bikes.find({
     isApproved: true,
     isavailable: true,
+    isClear: true,
   });
   if (!availableBikes) {
     return res
@@ -99,6 +100,7 @@ export const availableBikes = async (req, res) => {
     data: availableBikes,
   });
 };
+// =================================================
 
 //getSelectedBike
 export const getSelectedBike = async (req, res) => {
@@ -125,6 +127,8 @@ export const getSelectedBike = async (req, res) => {
   });
 };
 
+// ==============================================
+
 //getTopbikes
 export const getTopBikes = async (req, res) => {
   const allBikes = await Bikes.find();
@@ -137,6 +141,8 @@ export const getTopBikes = async (req, res) => {
   }
   return res.json({ topBikes });
 };
+
+// ==================================================
 
 //find bikes
 export const findBike = async (req, res) => {
@@ -166,6 +172,8 @@ export const findBike = async (req, res) => {
     .json({ success: true, message: "Bikes found", data: filteredBikes });
 };
 
+// ==============================================
+
 //getMainlocations
 export const getMainLocation = async (req, res) => {
   const mainLocations = await Bikes.distinct("mainLocation");
@@ -177,16 +185,78 @@ export const getMainLocation = async (req, res) => {
 
 // ==================================================
 
-
 //get bookings bikes data per user
 export const getBookedBikes = async (req, res) => {
   const usersId = req.user;
   if (!usersId) {
     return res.status(400).json({ message: "user id not found" });
   }
-  const bookingsData = await Booking.find({userId:usersId}).populate("bikeId")
-  if(!bookingsData){
-    return res.status(400).json({message:"your booking data not found"})
+  const bookingsData = await Booking.find({ userId: usersId }).populate(
+    "bikeId"
+  );
+  if (!bookingsData) {
+    return res.status(400).json({ message: "your booking data not found" });
   }
-  return res.status(200).json({message:"fetching bookings data successful", data:bookingsData})
+
+  const sortedBookingData = bookingsData.sort(
+    (a, b) => a.isCanceled - b.isCanceled
+  );
+  // console.log("sorted data", sortedBookingData)
+  if (!sortedBookingData) {
+    return res.status(404).json({ message: "sorted data not found" });
+  }
+
+  return res.status(200).json({
+    message: "fetching bookings data successful",
+    data: sortedBookingData,
+  });
+};
+
+// ==================================================
+//cancelbooking
+export const cancelBooking = async (req, res) => {
+  const bookingId = req.params.id;
+  if (!bookingId) {
+    return res.status(400).json({ message: "booking cannot be found" });
+  }
+  const { keyWord } = req.body;
+  if (!keyWord) {
+    return res.status(400).json({ message: "keyWord cannot be found" });
+  }
+
+  if (keyWord === "clearcancelBooking") {
+    const CanceledBooking = await Booking.findOne({
+      _id: bookingId,
+      isCanceled: true,
+    });
+    if (!cancelBooking) {
+      return res.status(400).json({ message: "canceled booking not found" });
+    }
+    CanceledBooking.isClear = true;
+    await CanceledBooking.save();
+  } else if (keyWord === "booking") {
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(400).json({ message: "booking not found" });
+    }
+    booking.isCanceled = true;
+    await booking.save();
+  }
+
+  return res.status(200).json({ message: "booking canceled", data: booking });
+};
+
+// ============================================
+// delete canceled history
+export const deleteCancelHistor = async (req, res) => {
+  console.log(req.body)
+  const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({ message: "id not found" });
+  }
+  const deleteBooking = await Booking.findOneAndDelete({ _id: id });
+  if (!deleteBooking) {
+    return res.status(400).json({ message: "not cleared" });
+  }
+  return res.status(200).json({ message: "data deleted successfully" });
 };

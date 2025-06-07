@@ -1,4 +1,5 @@
 import Bikes from "../../../models/bikeModel/bikesModel.js";
+import Booking from "../../../models/bookingModel/bookingModel.js";
 import Providers from "../../../models/providersModel/providers.js";
 
 // ================================ Add Bikes =================================
@@ -94,6 +95,7 @@ export const getLiveBikes = async (req, res) => {
 };
 
 // ============================ get pending bikes =========================
+// pending bikes = not approved by the admin
 export const getPendingBikes = async (req, res) => {
   const id = req.user;
   const pendingBikes = await Bikes.find({ isApproved: false, providersId: id });
@@ -109,7 +111,9 @@ export const getPendingBikes = async (req, res) => {
   });
 };
 
-//get all bikes
+// ==============================================
+
+//get all bikes of the particular provider
 export const getMyBikes = async (req, res) => {
   const id = req.user;
   if (!id) {
@@ -119,13 +123,11 @@ export const getMyBikes = async (req, res) => {
   if (!Mybikes) {
     return res.status(404).json({ success: false, message: "no bikes found" });
   }
-  return res
-    .status(200)
-    .json({
-      success: true,
-      message: `my bikes fetched successfully`,
-      data: Mybikes,
-    });
+  return res.status(200).json({
+    success: true,
+    message: `my bikes fetched successfully`,
+    data: Mybikes,
+  });
 };
 
 // ====================================================================
@@ -136,22 +138,45 @@ export const getMyBikes = async (req, res) => {
 //   return res.status(200)
 // }
 
-export const getSpecificProvider = async (req, res) => {
-  const providerId = req.user;
-  if (!providerId) {
-    return res.status(400).json({
-      success: false,
-      message: `provider id not found, please login `,
-    });
-  }
-  const specificProvider = await Providers.findById(providerId);
-  if (!specificProvider) {
-    return res.status(400).json({ success: false, message: `please login ` });
+// ================================================
+// delete approved bikes
+
+export const deleteListedBike = async (req, res) => {
+  const id = req.params;
+  if (!id) {
+    return res
+      .status(400)
+      .json({ message: "bike id not found in the database" });
   }
 
-  return res.status(200).json({
-    success: true,
-    message: `providers data fetched`,
-    data: specificProvider,
-  });
+  const deleteListedBike = await Bikes.findByIdAndDelete(id);
+  if (!deleteListedBike) {
+    return res.status(400).json({ message: "failed to delete" });
+  }
+
+  return res.status(200).json({ message: "your bike deleted successfully" });
 };
+
+
+// ================================
+// to change booked bike status to picked up
+
+export const changeBikeStatus = async (req, res) => {
+  const bookingId = req.params;
+  if (!bookingId) {
+    return res.status(400).json({ message: "credentials not found" });
+  }
+
+  const changeStatus = await Booking.findByIdAndUpdate(
+    id,
+    { isPickedUp: true },
+    { new: true }
+  );
+  if (!changeStatus) {
+    return res.status(400).json({ message: "operation failed" });
+  }
+
+  return res.status(200).json({ message: "status changed" });
+};
+
+

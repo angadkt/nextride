@@ -3,7 +3,6 @@ import { sendVerificationEmail } from "../../../middleware/nodeMailer/mailer.js"
 import Providers from "../../../models/providersModel/providers.js";
 import { comparePassword, hashPassword } from "../../../utils/bcrypt.js";
 import { generateToken } from "../../../utils/jwt.js";
-// import {  verificationToken } from "../../../utils/emailToken.js";
 
 export const providerRegister = async (req, res) => {
   const { username, email, password, phone, address } = req.body;
@@ -151,4 +150,29 @@ export const providerLogout = async (req, res) => {
   return res
     .status(200)
     .json({ success: true, message: "provider Loggedout successfully" });
+};
+
+
+
+// ========================================
+
+// get profile for the provider
+export const getSpecificProvider = async (req, res) => {
+  const providerId = req.user;
+  if (!providerId) {
+    return res.status(400).json({
+      success: false,
+      message: `provider id not found, please login `,
+    });
+  }
+  const specificProvider = await Providers.findById(providerId);
+  if (!specificProvider) {
+    return res.status(400).json({ success: false, message: `please login ` });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `providers data fetched`,
+    data: specificProvider,
+  });
 };

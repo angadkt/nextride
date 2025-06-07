@@ -1,4 +1,5 @@
 import MotionDiv from "@/components/Anims/motionDiv";
+import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navBar";
 import Companies from "@/pages/companyInfo/companies";
 import Hero from "@/pages/heroSection/hero";
@@ -14,6 +15,7 @@ export default function Home() {
 
       <Companies />
       <TopBikesSection />
+      <Footer />
       {/* </GoogleOAuthProvider> */}
     </>
   );

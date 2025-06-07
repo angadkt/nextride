@@ -4,6 +4,7 @@ import {
   providerLogout,
   providerRegister,
   verifyEmail,
+  getSpecificProvider
 } from "../../controllers/provider/providerAuthController/providerAuth.js";
 import { tryCatch } from "../../middleware/tryCatch/tryCatch.js";
 import upload from "../../middleware/uploadMiddleware/uploadMiddleware.js";
@@ -12,7 +13,6 @@ import {
   getLiveBikes,
   getMyBikes,
   getPendingBikes,
-  getSpecificProvider,
 } from "../../controllers/provider/providerDash/providerDash.js";
 import { isAuthenticate } from "../../middleware/isAuth/isAuth.js";
 

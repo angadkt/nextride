@@ -20,21 +20,7 @@ export default function BookingForm() {
     setPickupDate,
     setDropoffDate,
   } = useStore();
-  // const [filteredLocations, setFilteredLocations] =
-  //   useState<string[]>();
-  // const [showDropdown, setShowDropdown] = useState(false);
- 
-  // useEffect(() => {
-  //   const today = new Date().toISOString().split("T")[0];
-  //   if (!pickupDate) setPickupDate(today);
-  //   if (!dropoffDate) setDropoffDate(today);
-  // }, [pickupDate, dropoffDate, setPickupDate, setDropoffDate]);
 
-  // useEffect(() => {
-  //   console.log("Pickup Location:", pickupLocation);
-  //   console.log("Pickup Date:", pickupDate);
-  //   console.log("Dropoff Date:", dropoffDate);
-  // }, [pickupLocation, pickupDate, dropoffDate]);
 
 
 
@@ -73,7 +59,7 @@ export default function BookingForm() {
   const locations = data?.data;
 
   return (
-    <div className="w-full h-auto  px-5 xl:px-80 bg-transparent z-10 absolute -bottom-14">
+    <div className="w-full h-auto  px-5 xl:px-[14rem] bg-transparent z-10 absolute -bottom-14">
       <div className="bg-formBg w-full h-full flex flex-wrap md:flex-nowrap items-center px-5 md:px-10 rounded-2xl shadow-xl justify-center gap-3 md:gap-5 py-5">
         <div className="flex flex-col gap-1 w-full md:w-auto ">
           <p>Pick-up Location</p>

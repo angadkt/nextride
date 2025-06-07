@@ -45,6 +45,18 @@ const bookingSchema = mongoose.Schema(
       ref: "Providers",
       required: true,
     },
+    isCanceled: {
+      type:Boolean,
+      default: false
+    },
+    isPickedUp:{
+      type:Boolean,
+      default:false
+    },
+    isClear:{
+      type:Boolean,
+      default:false
+    }
   },
   { timestamps: true }
 );

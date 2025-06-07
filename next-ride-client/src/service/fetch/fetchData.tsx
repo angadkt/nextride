@@ -137,3 +137,8 @@ export const getBookingsData = async() => {
   const response = await axiosInstance.get("/user/getmybookings")
   return response.data?.data
 }
+
+
+//cancel booking &  clear canceled booking
+
+// export const  get

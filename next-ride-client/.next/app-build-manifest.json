@@ -16,20 +16,25 @@
       "static/chunks/main-app.js",
       "static/chunks/app/profile/page.js"
     ],
-    "/(auth)/login/page": [
+    "/(provider)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/login/page.js"
+      "static/chunks/app/(provider)/layout.js"
+    ],
+    "/(provider)/auth/prologin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(provider)/auth/prologin/page.js"
+    ],
+    "/(provider)/auth/proregister/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(provider)/auth/proregister/page.js"
     ],
     "/(user)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(user)/layout.js"
-    ],
-    "/(user)/bookings/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(user)/bookings/page.js"
     ],
     "/(user)/findbikes/page": [
       "static/chunks/webpack.js",
@@ -41,15 +46,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(user)/findbikes/[id]/page.js"
     ],
-    "/(provider)/layout": [
+    "/(user)/bookings/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(provider)/layout.js"
+      "static/chunks/app/(user)/bookings/page.js"
     ],
-    "/(provider)/auth/prologin/page": [
+    "/(auth)/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(provider)/auth/prologin/page.js"
+      "static/chunks/app/(auth)/login/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

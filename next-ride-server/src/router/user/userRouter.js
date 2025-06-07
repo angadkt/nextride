@@ -11,6 +11,8 @@ import {
 import {
   availableBikes,
   bookBike,
+  cancelBooking,
+  deleteCancelHistor,
   findBike,
   getBookedBikes,
   getMainLocation,
@@ -38,5 +40,7 @@ router.get("/mainlocations", tryCatch(getMainLocation));
 //bike-booking
 router.post("/bookmybike", isAuthenticate, tryCatch(bookBike));
 router.get("/getmybookings", isAuthenticate, tryCatch(getBookedBikes));
+router.put("/cancelbooking/:id", tryCatch(cancelBooking))
+router.post("/deletecancelhistory", tryCatch(deleteCancelHistor))
 
 export default router;

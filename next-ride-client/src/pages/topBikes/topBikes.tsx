@@ -42,7 +42,7 @@ export default function TopBikesSection() {
                 className="object-contain w-full h-56"
                 alt="Bike Image"
               />
-              <h2 className="mt-4 text-lg font-medium">{item.bikeName}</h2>
+              <h2 className="mt-4 text-lg font-semibold py-1 px-4 bg-black text-gray-400 rounded-tl-xl rounded-br-xl ">{item.name}</h2>
             </div>
           </div>
         ))}

@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Navbar from "@/components/navbar/navBar";
+// import Footer from "@/components/footer/footer";
 
 
 const ClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
@@ -82,6 +83,7 @@ export default function RootLayout({
             <Navbar />
             <main>{children}</main>
             <Toaster />
+           
           </Providers>
         </GoogleOAuthProvider>
       </body>

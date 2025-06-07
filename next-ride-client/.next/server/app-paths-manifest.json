@@ -1,7 +1,8 @@
 {
-  "/page": "app/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/(user)/bookings/page": "app/(user)/bookings/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(provider)/auth/prologin/page": "app/(provider)/auth/prologin/page.js",
   "/(user)/findbikes/page": "app/(user)/findbikes/page.js",
-  "/(user)/findbikes/[id]/page": "app/(user)/findbikes/[id]/page.js"
+  "/(user)/findbikes/[id]/page": "app/(user)/findbikes/[id]/page.js",
+  "/(provider)/auth/proregister/page": "app/(provider)/auth/proregister/page.js"
 }
